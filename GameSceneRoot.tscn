@@ -1,0 +1,117 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Player1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://player2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Ball.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.011976, 0.994012 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.917969, 0.787983, 0.0860596, 1, 0.949219, 0.795313, 0.0926971, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+width = 1280
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 1144, 62 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 1144, 62 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 295.557, 145 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 315.963, 145 )
+
+[sub_resource type="PhysicsMaterial" id=5]
+friction = 0.0
+bounce = 0.5
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 10, 65 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 10, 524.544 )
+
+[node name="GameSceneRoot" type="Node2D"]
+position = Vector2( 4.29596, 1.43198 )
+
+[node name="Ground" type="StaticBody2D" parent="."]
+collision_layer = 8
+
+[node name="Sprite" type="Sprite" parent="Ground"]
+position = Vector2( 641.416, 729.16 )
+scale = Vector2( 1.07506, 264.913 )
+texture = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2( 608, 659 )
+shape = SubResource( 3 )
+
+[node name="BallArea" type="Area2D" parent="Ground"]
+collision_layer = 32
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/BallArea"]
+position = Vector2( 608, 666 )
+shape = SubResource( 9 )
+
+[node name="Player1Area" type="Area2D" parent="Ground"]
+editor/display_folded = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Player1Area"]
+position = Vector2( 299.282, 454.365 )
+shape = SubResource( 7 )
+
+[node name="Player2Area" type="Area2D" parent="Ground"]
+editor/display_folded = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Player2Area"]
+position = Vector2( 934.577, 451.644 )
+shape = SubResource( 8 )
+
+[node name="Player1Root" parent="." instance=ExtResource( 1 )]
+position = Vector2( 227.899, 554.475 )
+scale = Vector2( 3, 3 )
+collision_mask = 26
+
+[node name="player2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1206.05, 566.104 )
+scale = Vector2( 3, 3 )
+
+[node name="BallRoot" parent="." instance=ExtResource( 3 )]
+position = Vector2( 597.75, 212.729 )
+collision_mask = 37
+physics_material_override = SubResource( 5 )
+SERVE_SPEED = 200
+
+[node name="Net" type="StaticBody2D" parent="."]
+editor/display_folded = true
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Net"]
+position = Vector2( 604.782, 534.459 )
+shape = SubResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="Net"]
+margin_left = 595.992
+margin_top = 467.651
+margin_right = 615.992
+margin_bottom = 597.651
+color = Color( 0, 0, 0, 1 )
+
+[node name="Barrier" type="StaticBody2D" parent="."]
+editor/display_folded = true
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barrier"]
+position = Vector2( 605.725, 512.646 )
+shape = SubResource( 6 )
+
+[node name="StartingPoint" type="Position2D" parent="."]
+position = Vector2( 605, 150 )
+
+[connection signal="area_entered" from="Ground/Player1Area" to="BallRoot" method="_on_Player1Area_area_entered"]
+[connection signal="area_entered" from="Ground/Player2Area" to="BallRoot" method="_on_Player2Area_area_entered"]
